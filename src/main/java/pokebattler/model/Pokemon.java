@@ -63,6 +63,14 @@ public class Pokemon {
         }
     }
 
+    public void takeDamage(int damage) {
+        currentHp = Math.max(0, currentHp - damage);
+    }
+
+    public boolean isFainted() {
+        return currentHp == 0;
+    }
+
     public String getName() {
         return name;
     }

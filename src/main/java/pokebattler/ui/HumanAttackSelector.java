@@ -13,7 +13,7 @@ public class HumanAttackSelector implements AttackSelector {
     public HumanAttackSelector(Scanner scanner) {
         this.scanner = scanner;
     }
-
+    @Override
     public Attack chooseAttack(Pokemon pokemon) {
         List<Attack> attacks = pokemon.getAttacks();
         while (true) {
