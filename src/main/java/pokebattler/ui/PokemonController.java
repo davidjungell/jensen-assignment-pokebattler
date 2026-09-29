@@ -356,7 +356,7 @@ public class PokemonController {
         System.out.println(newAttack.getName() + " har lagts till för " + pokemon.getName() + ".");
     }
 
-    private static void printAttacks(Pokemon pokemon) {
+    static void printAttacks(Pokemon pokemon) {
         System.out.println();
         System.out.println("Nuvarande attacker hos " + pokemon.getName() + ":");
         List<Attack> attacks = pokemon.getAttacks();
