@@ -1,27 +1,14 @@
 package pokebattler.battle;
 
-public class BattleResult {
-    String log;
-    String winnerName;
-    String loserName;
-    boolean completed;
+import java.util.List;
 
-    public BattleResult(String log, String winnerName, String loserName, boolean completed) {
-        this.log = log;
-        this.winnerName = winnerName;
-        this.loserName = loserName;
-        this.completed = completed;
+public record BattleResult(String playerName, String pokemonName, List<String> playerAttacksUsed, boolean playerWon, boolean completed) {
+
+    public static BattleResult aborted() {
+        return new BattleResult(null, null, List.of(), false, false);
     }
 
-    public static BattleResult aborted(String log) {
-        return new BattleResult(log, null, null, false);
-    }
-
-    public static BattleResult completed(String log, String winnerName, String loserName) {
-        return new BattleResult(log, winnerName, loserName, true);
-    }
-
-    public boolean isCompleted() {
-        return completed;
+    public static BattleResult completed(String playerName, String pokemonName, List<String> playerAttacksUsed, boolean playerWon) {
+        return new BattleResult(playerName, pokemonName, playerAttacksUsed, playerWon, true);
     }
 }
