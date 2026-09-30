@@ -16,6 +16,6 @@ public class CPUAttackSelector implements AttackSelector {
     @Override
     public Attack chooseAttack(Pokemon attacker) {
         List<Attack> attacks = attacker.getAttacks();
-        return attacks.get(random.nextInt(0, attacks.size()));
+        return attacks.get(random.nextInt(attacks.size()));
     }
 }

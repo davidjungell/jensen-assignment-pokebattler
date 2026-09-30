@@ -18,7 +18,7 @@ public class HumanAttackSelector implements AttackSelector {
         List<Attack> attacks = pokemon.getAttacks();
         while (true) {
             PokemonController.printAttacks(pokemon);
-            String input = InputHelper.promptOrBack(scanner, "Välj attack (1-" + attacks.size() + ") eller tryck Enter för att backa: ");
+            String input = InputHelper.promptOrBack(scanner, "Välj attack (1-" + attacks.size() + ") eller tryck Enter för att avbryta striden: ");
             if (input == null) {
                 return null;
             }
@@ -36,7 +36,6 @@ public class HumanAttackSelector implements AttackSelector {
             } else {
                 System.out.println("Ogiltig inmatning. Försök igen.");
             }
-
         }
     }
 }
