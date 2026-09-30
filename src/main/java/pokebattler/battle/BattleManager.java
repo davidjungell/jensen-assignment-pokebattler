@@ -3,72 +3,80 @@ package pokebattler.battle;
 import pokebattler.model.Attack;
 import pokebattler.model.Pokemon;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BattleManager {
     private final Random random;
-    private final AttackSelector selectorA;
-    private final AttackSelector selectorB;
+    private final PokemonSelector humanPokemonSelector;
+    private final AttackSelector humanAttackSelector;
+    private final PokemonSelector cpuPokemonSelector;
+    private final AttackSelector cpuAttackSelector;
+    private final static double CRITICAL_CHANCE = 0.15;
+    private final static double CRITICAL_MULTIPLIER = 2.0;
 
-    public BattleManager(Random random, AttackSelector SelectorA, AttackSelector SelectorB) {
+    public BattleManager(Random random, PokemonSelector humanPokemonSelector, AttackSelector humanAttackSelector, PokemonSelector cpuPokemonSelector, AttackSelector cpuAttackSelector) {
         this.random = random;
-        this.selectorA = SelectorA;
-        this.selectorB = SelectorB;
+        this.humanPokemonSelector = humanPokemonSelector;
+        this.humanAttackSelector = humanAttackSelector;
+        this.cpuPokemonSelector = cpuPokemonSelector;
+        this.cpuAttackSelector = cpuAttackSelector;
     }
 
-    public BattleResult fight(StringBuilder log, String playerA, String playerB, Pokemon PokemonA, Pokemon PokemonB) {
-        boolean aStarts = random.nextBoolean();
-        Pokemon firstPokemon = aStarts ? PokemonA : PokemonB;
-        Pokemon secondPokemon = aStarts ? PokemonB : PokemonA;
-        AttackSelector firstAttackSelector = aStarts ? selectorA : selectorB;
-        AttackSelector secondAttackSelector = aStarts ? selectorB : selectorA;
+    public BattleResult fight(String playerName) {
+        Pokemon human = humanPokemonSelector.choosePokemon();
+        if (human == null) return BattleResult.aborted();
+        Pokemon cpu = cpuPokemonSelector.choosePokemon();
+        List<String> playerAttacksUsed = new ArrayList<>();
+        boolean playerTurn = random.nextBoolean();
 
-        String winnerName, loserName;
         int round = 1;
-        while(true) {
-            boolean fightCompleted = takeTurn(firstAttackSelector, firstPokemon, secondPokemon);
-            if (!fightCompleted) {
-                return BattleResult.aborted(log.toString());
-            }
-            if (secondPokemon.isFainted()) {
-                winnerName = playerA;
-                loserName = playerB;
-                break;
-            }
+        while (!human.isFainted() && !cpu.isFainted()) {
+            Pokemon attacker = playerTurn ? human : cpu;
+            Pokemon defender = playerTurn ? cpu : human;
+            AttackSelector selector = playerTurn ? humanAttackSelector : cpuAttackSelector;
 
-            takeTurn(secondAttackSelector, secondPokemon, firstPokemon);
-            if (firstPokemon.isFainted()) {
-                winnerName = playerB;
-                loserName = playerA;
-                break;
+            report("Runda %d", round);
+            Attack attack = selector.chooseAttack(attacker);
+            if (attack == null) {
+                report("Striden avbröts, statistiken sparas inte.");
+                return BattleResult.aborted();
             }
+            performAttack(attack, attacker, defender);
+            if (playerTurn) playerAttacksUsed.add(attack.getName());
+            playerTurn = !playerTurn;
             round++;
         }
-        return BattleResult.completed(log.toString(), winnerName, loserName);
+
+        boolean playerWon = cpu.isFainted();
+        String winnerName = playerWon ? playerName : "CPU";
+        String winnerPokemon = playerWon ? human.getName() : cpu.getName();
+        report("%s (med Pokémon %s) vinner striden!", winnerName, winnerPokemon);
+
+        return BattleResult.completed(playerName, human.getName(), playerAttacksUsed, playerWon);
     }
 
-    private boolean takeTurn(AttackSelector attackSelector, Pokemon attacker, Pokemon defender) {
-        Attack attack = attackSelector.chooseAttack(attacker);
-        if (attack == null) {
-            return false;
-        }
-
+    private void performAttack(Attack attack, Pokemon attacker, Pokemon defender) {
         boolean missAttack = random.nextDouble() > attack.getAccuracy();
         if (missAttack) {
-
-            return true;
+            report("%s använde attacken %s på %s, men missade!", attacker, attack, defender);
+            return;
         }
 
         double multiplier = attack.getType().effectivenessAgainst(defender.getType());
-        double CRITICAL_CHANCE = 0.15;
         boolean critical = random.nextDouble() < CRITICAL_CHANCE;
         if (critical) {
-            double CRITICAL_MULTIPLIER = 2.0;
             multiplier *= CRITICAL_MULTIPLIER;
         }
         int damage = (int) Math.round(attack.getDamage() * multiplier);
         defender.takeDamage(damage);
-        return true;
+        report("%s använde attacken %s på %s för %d skada.%s", attacker, attack, defender, damage, critical ? " (KRITISK TRÄFF!)" : "");
     }
 
+    //TODO: vi har print nu i Battlemanager, strukturproblem?
+    private void report(String format, Object... formatArgs) {
+        String formatted = String.format(format, formatArgs);
+        System.out.println(formatted);
+    }
 }
