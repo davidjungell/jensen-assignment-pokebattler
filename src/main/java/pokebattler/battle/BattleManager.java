@@ -31,13 +31,16 @@ public class BattleManager {
         List<String> playerAttacksUsed = new ArrayList<>();
         boolean playerTurn = random.nextBoolean();
 
-        int round = 1;
+        int turn = 1;
         while (!human.isFainted() && !cpu.isFainted()) {
             Pokemon attacker = playerTurn ? human : cpu;
             Pokemon defender = playerTurn ? cpu : human;
             AttackSelector selector = playerTurn ? humanAttackSelector : cpuAttackSelector;
 
-            report("Runda %d", round);
+            if (turn % 2 != 0) {
+                report("Runda %d", (int) Math.ceil(turn / 2.0));
+            }
+
             Attack attack = selector.chooseAttack(attacker);
             if (attack == null) {
                 report("Striden avbröts, statistiken sparas inte.");
@@ -46,7 +49,7 @@ public class BattleManager {
             performAttack(attack, attacker, defender);
             if (playerTurn) playerAttacksUsed.add(attack.getName());
             playerTurn = !playerTurn;
-            round++;
+            turn++;
         }
 
         boolean playerWon = cpu.isFainted();
@@ -74,7 +77,7 @@ public class BattleManager {
         report("%s använde attacken %s på %s för %d skada.%s", attacker, attack, defender, damage, critical ? " (KRITISK TRÄFF!)" : "");
     }
 
-    //TODO: vi har print nu i Battlemanager, strukturproblem?
+    //TODO: vi har print nu i Battlemanager, strukturproblem? Ta bort detta ersätt med sout?
     private void report(String format, Object... formatArgs) {
         String formatted = String.format(format, formatArgs);
         System.out.println(formatted);
