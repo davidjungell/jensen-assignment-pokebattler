@@ -9,7 +9,6 @@ public class BattleStatistics {
         this.results = new ArrayList<>(results);
     }
 
-
     public int totalWins() {
         return (int) results.stream()
                 .filter(result -> result.playerWon())
@@ -50,7 +49,7 @@ public class BattleStatistics {
         int wins = winsPerPokemon().getOrDefault(pokemonName, 0);
         int losses = battles - wins;
         int percent = (int) Math.round(100.0 * wins / battles);
-        return wins + " - " + losses + " (" + percent + "% vinster)";
+        return wins + " - " + losses + " (" + percent + "% vinster)"; // Ger t.ex. "3 - 1 (75 % vinster)"
     }
 
     public Optional<String> mostCommon(List<String> items) {
@@ -80,5 +79,4 @@ public class BattleStatistics {
         }
         return mostCommon(attacks);
     }
-
 }
