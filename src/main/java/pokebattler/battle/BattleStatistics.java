@@ -1,9 +1,6 @@
 package pokebattler.battle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BattleStatistics {
     private final List<BattleResult> results;
@@ -56,6 +53,32 @@ public class BattleStatistics {
         return wins + " - " + losses + " (" + percent + "% vinster)";
     }
 
+    public Optional<String> mostCommon(List<String> items) {
+        Map<String, Integer> countMap = new HashMap<>();
+        for (String item : items) {
+            Integer count = countMap.getOrDefault(item, 0) + 1;
+            countMap.put(item, count);
+        }
 
+        return countMap.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey);
+    }
+
+    public Optional<String> mostUsedPokemon() {
+        List<String> names = new ArrayList<>();
+        for (BattleResult result : results) {
+            names.add(result.pokemonName());
+        }
+        return mostCommon(names);
+    }
+
+    public Optional<String> mostUsedAttack() {
+        List<String> attacks = new ArrayList<>();
+        for (BattleResult result : results) {
+            attacks.addAll(result.playerAttacksUsed());
+        }
+        return mostCommon(attacks);
+    }
 
 }
