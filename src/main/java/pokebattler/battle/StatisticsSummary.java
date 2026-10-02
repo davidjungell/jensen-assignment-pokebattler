@@ -6,7 +6,7 @@ public record StatisticsSummary(
         int totalWins,
         int totalLosses,
         String mostUsedPokemon,
-        String moseUsedAttack,
+        String mostUsedAttack,
         Map<String, PokemonStats> perPokemon
 ) {
 }

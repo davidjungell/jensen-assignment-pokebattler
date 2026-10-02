@@ -79,4 +79,26 @@ public class BattleStatistics {
         }
         return mostCommon(attacks);
     }
+
+    public StatisticsSummary summary() {
+        Map<String, Integer> battles = battlesPerPokemon();
+        Map<String, Integer> wins = winsPerPokemon();
+
+        Map<String, PokemonStats> perPokemon = new TreeMap<>();
+        for (String name : battles.keySet()) {
+            int b = battles.getOrDefault(name, 0);
+            int w = wins.getOrDefault(name, 0);
+            int l = b - w;
+            int winRatio = (int) Math.round((float) w / b);
+            perPokemon.put(name, new PokemonStats(b, w, l, winRatio));
+        }
+
+        return new StatisticsSummary(
+                totalWins(),
+                totalLosses(),
+                mostUsedPokemon().orElse(null),
+                mostUsedAttack().orElse(null),
+                perPokemon
+                );
+    }
 }
