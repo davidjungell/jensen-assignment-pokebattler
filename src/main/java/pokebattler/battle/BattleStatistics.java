@@ -89,8 +89,8 @@ public class BattleStatistics {
             int b = battles.getOrDefault(name, 0);
             int w = wins.getOrDefault(name, 0);
             int l = b - w;
-            int winRatio = (int) Math.round((float) w / b);
-            perPokemon.put(name, new PokemonStats(b, w, l, winRatio));
+            int winPercent = (int) Math.round(100.0 * w / b);
+            perPokemon.put(name, new PokemonStats(b, w, l, winPercent));
         }
 
         return new StatisticsSummary(
