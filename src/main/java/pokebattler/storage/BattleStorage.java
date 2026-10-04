@@ -18,7 +18,6 @@ public class BattleStorage {
 
     public record BattleFile(List<BattleResult> results, StatisticsSummary summary) {};
 
-
     public static List<BattleResult> load() {
         File file = new File(RESULTS_JSON);
         if (!file.exists()) {

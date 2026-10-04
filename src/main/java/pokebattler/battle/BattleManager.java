@@ -43,7 +43,6 @@ public class BattleManager {
 
             Attack attack = selector.chooseAttack(attacker);
             if (attack == null) {
-                report("Striden avbröts, statistiken sparas inte.");
                 return BattleResult.aborted();
             }
             performAttack(attack, attacker, defender);

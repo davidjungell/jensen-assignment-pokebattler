@@ -84,7 +84,7 @@ public class BattleStatistics {
         Map<String, Integer> battles = battlesPerPokemon();
         Map<String, Integer> wins = winsPerPokemon();
 
-        Map<String, PokemonStats> perPokemon = new TreeMap<>();
+        Map<String, PokemonStats> perPokemon = new TreeMap<>(); // TreeMap gör att namnen sorteras alfabetiskt
         for (String name : battles.keySet()) {
             int b = battles.getOrDefault(name, 0);
             int w = wins.getOrDefault(name, 0);

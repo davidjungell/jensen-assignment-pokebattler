@@ -40,7 +40,6 @@ public class Manager {
         return result;
     }
 
-
     public static Pokemon findByName(String name) {
         for (Pokemon p : pokedexList) {
             if (p.getName().equalsIgnoreCase(name)) {
