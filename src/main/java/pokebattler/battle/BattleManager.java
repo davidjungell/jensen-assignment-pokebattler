@@ -66,7 +66,8 @@ public class BattleManager {
             return;
         }
 
-        double multiplier = attack.getType().effectivenessAgainst(defender.getType());
+        double randomDamageFactor = random.nextDouble(0.9, 1.1);
+        double multiplier = attack.getType().effectivenessAgainst(defender.getType()) * randomDamageFactor;
         boolean critical = random.nextDouble() < CRITICAL_CHANCE;
         if (critical) {
             multiplier *= CRITICAL_MULTIPLIER;
@@ -76,7 +77,6 @@ public class BattleManager {
         report("%s använde attacken %s på %s för %d skada.%s", attacker, attack, defender, damage, critical ? " (KRITISK TRÄFF!)" : "");
     }
 
-    //TODO: vi har print nu i Battlemanager, strukturproblem? Ta bort detta ersätt med sout?
     private void report(String format, Object... formatArgs) {
         String formatted = String.format(format, formatArgs);
         System.out.println(formatted);
