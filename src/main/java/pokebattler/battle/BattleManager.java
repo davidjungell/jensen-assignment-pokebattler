@@ -38,7 +38,8 @@ public class BattleManager {
             AttackSelector selector = playerTurn ? humanAttackSelector : cpuAttackSelector;
 
             if (turn % 2 != 0) {
-                report("Runda %d", (int) Math.ceil(turn / 2.0));
+                System.out.println();
+                report("====== Runda %d ======", (int) Math.ceil(turn / 2.0));
             }
 
             Attack attack = selector.chooseAttack(attacker);
@@ -61,8 +62,9 @@ public class BattleManager {
 
     private void performAttack(Attack attack, Pokemon attacker, Pokemon defender) {
         boolean missAttack = random.nextDouble() > attack.getAccuracy();
+        System.out.println();
         if (missAttack) {
-            report("%s använde attacken %s på %s, men missade!", attacker, attack, defender);
+            report("%s använde attacken %s på %s, men missade!", attacker.getName(), attack.getName(), defender.getName());
             return;
         }
 
@@ -74,7 +76,14 @@ public class BattleManager {
         }
         int damage = (int) Math.round(attack.getDamage() * multiplier);
         defender.takeDamage(damage);
-        report("%s använde attacken %s på %s för %d skada.%s", attacker, attack, defender, damage, critical ? " (KRITISK TRÄFF!)" : "");
+        report(
+                "%s använde attacken %s på %s för %d skada.%s",
+                attacker.getName(),
+                attack.getName(),
+                defender.getName(),
+                damage,
+                critical ? " (KRITISK TRÄFF!)" : ""
+        );
     }
 
     private void report(String format, Object... formatArgs) {

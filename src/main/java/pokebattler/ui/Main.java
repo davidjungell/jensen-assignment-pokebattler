@@ -24,7 +24,7 @@ public class Main {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println();
-            System.out.println("=== Välkommen till Pokédex ===");
+            System.out.println("=== Välkommen till Pokébattler ===");
             System.out.println("1. Visa en lista över alla Pokémon med statistik.");
             System.out.println("2. Lägg till en ny Pokémon i listan.");
             System.out.println("3. Redigera en Pokémon.");
@@ -86,12 +86,10 @@ public class Main {
                     Manager.setPokedexList(SeedData.loadSeedData());
                     System.out.println("Pokédexlistan har seedats till sina ursprungliga värden.");
                 }
-                case 8 -> {
-                    BattleController.startBattle(scanner);
-                }
-                case 9 -> {
-                    BattleController.showStats(scanner);
-                }
+                case 8 -> BattleController.startBattle(scanner);
+
+                case 9 -> BattleController.showStats(scanner);
+
                 case 10 -> {
                     try {
                         Storage.save(Manager.getPokedexList(), FileFormat.JSON);

@@ -12,7 +12,7 @@ public class SeedData {
         List<Attack> charmanderAttacks = List.of(
                 new Attack("Scratch", Type.NORMAL, 10, 1.0),
                 new Attack("Growl", Type.NORMAL, 1, 1.0),
-                new Attack("Ember", Type.FIRE, 15, .95),
+                new Attack("Ember", Type.FIRE, 35, .2),
                 new Attack("Smokescreen", Type.NORMAL, 1, 1.0)
         );
         Pokemon charmander = new Pokemon("Charmander", Type.FIRE, 39, 39, charmanderAttacks);
@@ -23,9 +23,9 @@ public class SeedData {
         Pokemon squirtle = new Pokemon("Squirtle", Type.WATER, 44, 44, squirtleAttacks);
 
         List<Attack> bulbasaurAttacks = List.of(
-                new Attack("Tackle", Type.NORMAL, 10, 1.0),
+                new Attack("Tackle", Type.NORMAL, 10, .7),
                 new Attack("Growl", Type.NORMAL, 1, 1.0),
-                new Attack("Vine whip", Type.GRASS, 13, 1.0),
+                new Attack("Vine whip", Type.GRASS, 14, 0.6),
                 new Attack("Leech seed", Type.GRASS, 1, .9)
         );
         Pokemon bulbasaur = new Pokemon("Bulbasaur", Type.GRASS, 45, 45, bulbasaurAttacks);
@@ -33,7 +33,7 @@ public class SeedData {
         List<Attack> pikachuAttacks = List.of(
                 new Attack("Quick attack", Type.NORMAL, 8, 1.0),
                 new Attack("Tail whip", Type.NORMAL, 1, 1.0),
-                new Attack("Thunder shock", Type.ELECTRIC, 16, 1.0),
+                new Attack("Thunder shock", Type.ELECTRIC, 16, .4),
                 new Attack("Thunder wave", Type.ELECTRIC, 1, .9)
         );
         Pokemon pikachu = new Pokemon("Pikachu", Type.ELECTRIC, 35, 35, pikachuAttacks);

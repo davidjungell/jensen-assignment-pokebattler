@@ -358,7 +358,7 @@ public class PokemonController {
 
     static void printAttacks(Pokemon pokemon) {
         System.out.println();
-        System.out.println("Nuvarande attacker hos " + pokemon.getName() + ":");
+        System.out.println("Attacker hos " + pokemon.getName() + ":");
         List<Attack> attacks = pokemon.getAttacks();
         for (int i = 0; i < attacks.size(); i++) {
             Attack a = pokemon.getAttacks().get(i);

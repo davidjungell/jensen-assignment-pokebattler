@@ -2,6 +2,7 @@ package pokebattler.ui;
 
 import pokebattler.battle.*;
 import pokebattler.exception.StorageException;
+import pokebattler.model.Pokemon;
 import pokebattler.storage.BattleStorage;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 public class BattleController {
 
     public static void startBattle(Scanner scanner) {
-        String playerName = InputHelper.promptOrBack(scanner, "Ange ditt namn eller tryck Enter för att backa: ");
+        String playerName = InputHelper.promptOrBack(scanner, "Ange ditt namn eller tryck [Enter] för att backa: ");
         if (playerName == null) {
             return;
         }
@@ -39,7 +40,8 @@ public class BattleController {
                 System.out.println(e.getMessage());
             }
 
-            System.out.println("Spela igen? (Y/N)?");
+            System.out.println();
+            System.out.print("Spela igen? (Y/N)?");
             String choice = scanner.nextLine();
             if (!choice.equalsIgnoreCase("Y")) {
                 return;
@@ -58,7 +60,7 @@ public class BattleController {
         if (results.isEmpty()) {
             System.out.println("Inga strider har spelats än.");
             System.out.println();
-            InputHelper.promptOrBack(scanner, "Tryck Enter för att återvända till menyn.");
+            InputHelper.promptOrBack(scanner, "Tryck [Enter] för att återvända till menyn: ");
             return;
         }
 
@@ -75,13 +77,21 @@ public class BattleController {
 
         for (Map.Entry<String, PokemonStats> entry : summary.perPokemon().entrySet()) {
             PokemonStats s = entry.getValue();
-            System.out.printf("%-15s: %d - %d (%d%% vinster)%n", entry.getKey(), s.wins(), s.losses(), s.winPercent());
+            System.out.printf("%-15s %d - %d (%d%% vinster)%n", entry.getKey() + ":", s.wins(), s.losses(), s.winPercent());
         }
         System.out.println();
-        InputHelper.promptOrBack(scanner, "Tryck Enter för att återvända till menyn.");
+        InputHelper.promptOrBack(scanner, "Tryck [Enter] för att återvända till menyn: ");
     }
 
     private static String orNone(String value) {
         return value == null ? "ingen" : value;
+    }
+
+    public static void printChosenPokemon(boolean isCpu, Pokemon chosen) {
+        String header = isCpu ? "CPUs val" : "Ditt val";
+        System.out.println();
+        System.out.printf("%s av Pokémon:%n", header);
+        System.out.printf("Namn: %-15s Typ: %-10s HP: %d/%d%n",
+                chosen.getName(), chosen.getType(), chosen.getCurrentHp(), chosen.getMaxHp());
     }
 }
