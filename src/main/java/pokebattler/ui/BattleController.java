@@ -4,6 +4,8 @@ import pokebattler.battle.*;
 import pokebattler.exception.StorageException;
 import pokebattler.storage.BattleStorage;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -46,6 +48,37 @@ public class BattleController {
     }
 
     public void showStats() {
+        List<BattleResult> results;
+        try {
+            results = BattleStorage.load();
+        } catch (StorageException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        if (results.isEmpty()) {
+            System.out.println("Inga strider har spelats än.");
+            return;
+        }
 
+        StatisticsSummary summary = new BattleStatistics(results).summary();
+
+        System.out.println();
+        System.out.println("=== Stridsstatistik ===");
+        System.out.println("Vinster: " + summary.totalWins());
+        System.out.println("Förluster: " + summary.totalLosses());
+        System.out.println("Mest använda Pokémon: " + orNone(summary.mostUsedPokemon()));
+        System.out.println("Mest använda attack: " + orNone(summary.mostUsedAttack()));
+        System.out.println();
+        System.out.println("Vinst/förlust per Pokémon:");
+
+        for (Map.Entry<String, PokemonStats> entry : summary.perPokemon().entrySet()) {
+            PokemonStats s = entry.getValue();
+            System.out.printf("%-15s: %d - %d (%d%% vinster)%n", entry.getKey(), s.wins(), s.losses(), s.winPercent());
+        }
+
+    }
+
+    private String orNone(String value) {
+        return value == null ? "ingen" : value;
     }
 }

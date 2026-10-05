@@ -41,17 +41,6 @@ public class BattleStatistics {
         return winMap;
     }
 
-    public String winRatioPerPokemon(String pokemonName) {
-        int battles = battlesPerPokemon().getOrDefault(pokemonName, 0);
-        if (battles == 0) {
-            return "Inga strider";
-        }
-        int wins = winsPerPokemon().getOrDefault(pokemonName, 0);
-        int losses = battles - wins;
-        int percent = (int) Math.round(100.0 * wins / battles);
-        return wins + " - " + losses + " (" + percent + "% vinster)"; // Ger t.ex. "3 - 1 (75 % vinster)"
-    }
-
     public Optional<String> mostCommon(List<String> items) {
         Map<String, Integer> countMap = new HashMap<>();
         for (String item : items) {
