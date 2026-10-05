@@ -16,7 +16,7 @@ public class BattleStorage {
     private static final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String RESULTS_JSON = "battle_results.json";
 
-    public record BattleFile(List<BattleResult> results, StatisticsSummary summary) {};
+    public record BattleFile(List<BattleResult> results, StatisticsSummary summary) {}
 
     public static List<BattleResult> load() {
         File file = new File(RESULTS_JSON);

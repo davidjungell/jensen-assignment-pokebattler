@@ -10,6 +10,12 @@ public record BattleResult(
         boolean completed
 ) {
 
+    public BattleResult {
+        if (playerAttacksUsed == null) {
+            playerAttacksUsed = List.of();
+        }
+    }
+
     public static BattleResult aborted() {
         return new BattleResult(null, null, List.of(), false, false);
     }
