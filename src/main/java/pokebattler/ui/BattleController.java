@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class BattleController {
 
-    public void startBattle(Scanner scanner) {
+    public static void startBattle(Scanner scanner) {
         String playerName = InputHelper.promptOrBack(scanner, "Ange ditt namn eller tryck Enter för att backa: ");
         if (playerName == null) {
             return;
@@ -47,7 +47,7 @@ public class BattleController {
         }
     }
 
-    public void showStats() {
+    public static void showStats(Scanner scanner) {
         List<BattleResult> results;
         try {
             results = BattleStorage.load();
@@ -57,6 +57,8 @@ public class BattleController {
         }
         if (results.isEmpty()) {
             System.out.println("Inga strider har spelats än.");
+            System.out.println();
+            InputHelper.promptOrBack(scanner, "Tryck Enter för att återvända till menyn.");
             return;
         }
 
@@ -75,10 +77,11 @@ public class BattleController {
             PokemonStats s = entry.getValue();
             System.out.printf("%-15s: %d - %d (%d%% vinster)%n", entry.getKey(), s.wins(), s.losses(), s.winPercent());
         }
-
+        System.out.println();
+        InputHelper.promptOrBack(scanner, "Tryck Enter för att återvända till menyn.");
     }
 
-    private String orNone(String value) {
+    private static String orNone(String value) {
         return value == null ? "ingen" : value;
     }
 }

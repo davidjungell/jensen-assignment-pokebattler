@@ -29,10 +29,12 @@ public class Main {
             System.out.println("2. Lägg till en ny Pokémon i listan.");
             System.out.println("3. Redigera en Pokémon.");
             System.out.println("4. Ta bort en Pokémon.");
-            System.out.println("5. Spara till fil.");
-            System.out.println("6. Läs in från fil.");
+            System.out.println("5. Spara Pokédexlistan till fil.");
+            System.out.println("6. Läs in Pokédexlist från fil.");
             System.out.println("7. Återställ Pokédexlistan till sin ursprungliga form.");
-            System.out.println("8. Avsluta (sparar automatiskt).");
+            System.out.println("8. Starta strid.");
+            System.out.println("9. Visa stridsstatistik.");
+            System.out.println("10. Avsluta (sparar Pokédexlistan automatiskt).");
             System.out.println();
             System.out.print("Ange ditt val: ");
 
@@ -85,6 +87,12 @@ public class Main {
                     System.out.println("Pokédexlistan har seedats till sina ursprungliga värden.");
                 }
                 case 8 -> {
+                    BattleController.startBattle(scanner);
+                }
+                case 9 -> {
+                    BattleController.showStats(scanner);
+                }
+                case 10 -> {
                     try {
                         Storage.save(Manager.getPokedexList(), FileFormat.JSON);
                         System.out.println("Avslutar programmet (sparade automatiskt till pokedex.json).");
