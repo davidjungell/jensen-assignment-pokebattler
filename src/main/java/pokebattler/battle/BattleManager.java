@@ -24,7 +24,7 @@ public class BattleManager {
         this.cpuAttackSelector = cpuAttackSelector;
     }
 
-    public BattleResult fight(String playerName) {
+    public BattleResult fight() {
         Pokemon human = humanPokemonSelector.choosePokemon();
         if (human == null) return BattleResult.aborted();
         Pokemon cpu = cpuPokemonSelector.choosePokemon();
@@ -53,11 +53,11 @@ public class BattleManager {
         }
 
         boolean playerWon = cpu.isFainted();
-        String winnerName = playerWon ? playerName : "CPU";
+        String winnerName = playerWon ? "Du" : "CPU";
         String winnerPokemon = playerWon ? human.getName() : cpu.getName();
         report("%s (med Pokémon %s) vinner striden!", winnerName, winnerPokemon);
 
-        return BattleResult.completed(playerName, human.getName(), playerAttacksUsed, playerWon);
+        return BattleResult.completed(human.getName(), playerAttacksUsed, playerWon);
     }
 
     private void performAttack(Attack attack, Pokemon attacker, Pokemon defender) {

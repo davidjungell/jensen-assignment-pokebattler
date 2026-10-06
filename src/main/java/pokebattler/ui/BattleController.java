@@ -13,10 +13,7 @@ import java.util.Scanner;
 public class BattleController {
 
     public static void startBattle(Scanner scanner) {
-        String playerName = InputHelper.promptOrBack(scanner, "Ange ditt namn eller tryck [Enter] för att backa: ");
-        if (playerName == null) {
-            return;
-        }
+
         Random random = new Random();
         while (true) {
             BattleManager battleManager = new BattleManager(
@@ -26,7 +23,7 @@ public class BattleController {
                     new CPUPokemonSelector(random),
                     new CPUAttackSelector(random)
             );
-            BattleResult result = battleManager.fight(playerName);
+            BattleResult result = battleManager.fight();
 
             if (!result.completed()) {
                 System.out.println("Striden avbröts, statistiken sparas inte.");
