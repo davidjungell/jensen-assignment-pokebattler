@@ -24,14 +24,14 @@ public class HumanPokemonSelector implements PokemonSelector {
 
             Pokemon chosen;
             try {
-                chosen = Manager.findByName(input);
+                chosen = Manager.findByName(input).copy();
             } catch (PokemonNotFoundException e) {
                 System.out.println(e.getMessage());
                 continue;
             }
 
-            if (chosen.getAttacks().isEmpty()) {
-                System.out.println(chosen + "har inga attacker! Välj en annan Pokémon.");
+            if (chosen.getAttacks() == null || chosen.getAttacks().isEmpty()) {
+                System.out.println(chosen.getName() + " har inga attacker! Välj en annan Pokémon.");
             } else {
                 BattleController.printChosenPokemon(false, chosen);
                 return chosen;

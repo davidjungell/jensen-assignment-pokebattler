@@ -63,6 +63,10 @@ public class Pokemon {
         }
     }
 
+    public Pokemon copy() {
+        return new Pokemon(name, type, maxHp, maxHp, attacks); // alltid full hp vid ny strid
+    }
+
     public void takeDamage(int damage) {
         currentHp = Math.max(0, currentHp - damage);
     }

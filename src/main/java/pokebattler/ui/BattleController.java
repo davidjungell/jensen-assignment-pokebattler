@@ -4,6 +4,7 @@ import pokebattler.battle.*;
 import pokebattler.exception.StorageException;
 import pokebattler.model.Pokemon;
 import pokebattler.storage.BattleStorage;
+import pokebattler.storage.SeedData;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class BattleController {
                     random,
                     new HumanPokemonSelector(scanner),
                     new HumanAttackSelector(scanner),
-                    new CPUPokemonSelector(random),
+                    new CPUPokemonSelector(random, SeedData.loadSeedData()),
                     new CPUAttackSelector(random)
             );
             BattleResult result = battleManager.fight();
