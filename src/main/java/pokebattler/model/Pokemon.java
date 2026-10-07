@@ -1,6 +1,7 @@
 package pokebattler.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pokebattler.exception.InvalidPokemonException;
 
@@ -71,6 +72,7 @@ public class Pokemon {
         currentHp = Math.max(0, currentHp - damage);
     }
 
+    @JsonIgnore
     public boolean isFainted() {
         return currentHp == 0;
     }
