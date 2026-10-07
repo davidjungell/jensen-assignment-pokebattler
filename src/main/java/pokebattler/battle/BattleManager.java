@@ -57,7 +57,8 @@ public class BattleManager {
         boolean playerWon = cpu.isFainted();
         String winnerName = playerWon ? "Du" : "CPU";
         String winnerPokemon = playerWon ? human.getName() : cpu.getName();
-        report("%s (med Pokémon %s) vinner striden!", winnerName, winnerPokemon);
+        String loserPokemon = playerWon ? cpu.getName() : human.getName();
+        report("%s svimmade! %s (med Pokémon %s) vann striden!", loserPokemon, winnerName, winnerPokemon);
 
         return BattleResult.completed(human.getName(), playerAttacksUsed, playerWon);
     }
