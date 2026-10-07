@@ -32,7 +32,7 @@ public class BattleController {
 
             try {
                 BattleStorage.append(result);
-                System.out.println("Resultatet sparades i battle_results.json");
+                System.out.println("Resultatet sparades i battle_results.json.");
             } catch (StorageException e) {
                 System.out.println(e.getMessage());
             }
