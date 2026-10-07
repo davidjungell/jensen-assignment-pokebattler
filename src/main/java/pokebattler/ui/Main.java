@@ -11,7 +11,7 @@ import pokebattler.storage.Storage;
 
 import java.util.List;
 import java.util.Scanner;
-//TODO: make git project public
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

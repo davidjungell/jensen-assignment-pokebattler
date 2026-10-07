@@ -1,12 +1,12 @@
 package pokebattler.ui;
 
-import pokebattler.model.Attack;
-import pokebattler.service.Manager;
-import pokebattler.model.Pokemon;
-import pokebattler.model.Type;
 import pokebattler.exception.InvalidAttackException;
 import pokebattler.exception.InvalidPokemonException;
 import pokebattler.exception.PokemonNotFoundException;
+import pokebattler.model.Attack;
+import pokebattler.model.Pokemon;
+import pokebattler.model.Type;
+import pokebattler.service.Manager;
 
 import java.util.ArrayList;
 import java.util.List;

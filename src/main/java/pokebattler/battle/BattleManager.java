@@ -27,7 +27,9 @@ public class BattleManager {
     public BattleResult fight() {
         Pokemon human = humanPokemonSelector.choosePokemon();
         if (human == null) return BattleResult.aborted();
+        printChosenPokemon(false, human);
         Pokemon cpu = cpuPokemonSelector.choosePokemon();
+        printChosenPokemon(true, human);
         List<String> playerAttacksUsed = new ArrayList<>();
         boolean playerTurn = random.nextBoolean();
 
@@ -89,5 +91,13 @@ public class BattleManager {
     private void report(String format, Object... formatArgs) {
         String formatted = String.format(format, formatArgs);
         System.out.println(formatted);
+    }
+
+    private void printChosenPokemon(boolean isCpu, Pokemon chosen) {
+        String header = isCpu ? "CPUs val" : "Ditt val";
+        System.out.println();
+        report("%s av Pokémon:%n", header);
+        report("Namn: %-15s Typ: %-10s HP: %d/%d%n",
+                chosen.getName(), chosen.getType(), chosen.getCurrentHp(), chosen.getMaxHp());
     }
 }

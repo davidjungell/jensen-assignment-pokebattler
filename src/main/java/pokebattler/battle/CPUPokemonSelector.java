@@ -2,8 +2,6 @@ package pokebattler.battle;
 
 import pokebattler.model.Pokemon;
 
-import pokebattler.ui.BattleController;
-
 import java.util.List;
 import java.util.Random;
 
@@ -24,8 +22,6 @@ public class CPUPokemonSelector implements PokemonSelector {
                 .toList();
 
         int index = random.nextInt(candidates.size());
-        Pokemon chosen = candidates.get(index).copy();
-        BattleController.printChosenPokemon(true, chosen);
-        return chosen;
+        return candidates.get(index).copy();
     }
 }

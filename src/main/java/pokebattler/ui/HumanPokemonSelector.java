@@ -33,7 +33,6 @@ public class HumanPokemonSelector implements PokemonSelector {
             if (chosen.getAttacks() == null || chosen.getAttacks().isEmpty()) {
                 System.out.println(chosen.getName() + " har inga attacker! Välj en annan Pokémon.");
             } else {
-                BattleController.printChosenPokemon(false, chosen);
                 return chosen;
             }
         }

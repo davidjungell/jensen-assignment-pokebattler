@@ -2,7 +2,6 @@ package pokebattler.ui;
 
 import pokebattler.battle.*;
 import pokebattler.exception.StorageException;
-import pokebattler.model.Pokemon;
 import pokebattler.storage.BattleStorage;
 import pokebattler.storage.SeedData;
 
@@ -83,13 +82,5 @@ public class BattleController {
 
     private static String orNone(String value) {
         return value == null ? "ingen" : value;
-    }
-
-    public static void printChosenPokemon(boolean isCpu, Pokemon chosen) {
-        String header = isCpu ? "CPUs val" : "Ditt val";
-        System.out.println();
-        System.out.printf("%s av Pokémon:%n", header);
-        System.out.printf("Namn: %-15s Typ: %-10s HP: %d/%d%n",
-                chosen.getName(), chosen.getType(), chosen.getCurrentHp(), chosen.getMaxHp());
     }
 }
