@@ -38,7 +38,7 @@ public class BattleController {
             }
 
             System.out.println();
-            System.out.print("Spela igen? (Y/N)?");
+            System.out.print("Spela igen? (Y/N): ");
             String choice = scanner.nextLine();
             if (!choice.equalsIgnoreCase("Y")) {
                 return;
