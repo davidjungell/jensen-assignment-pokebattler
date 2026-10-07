@@ -29,7 +29,7 @@ public class BattleManager {
         if (human == null) return BattleResult.aborted();
         printChosenPokemon(false, human);
         Pokemon cpu = cpuPokemonSelector.choosePokemon();
-        printChosenPokemon(true, human);
+        printChosenPokemon(true, cpu);
         List<String> playerAttacksUsed = new ArrayList<>();
         boolean playerTurn = random.nextBoolean();
 
