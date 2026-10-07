@@ -91,7 +91,7 @@ damage = round( baseDamage x typeEffectiveness x randomFactor x criticalMultipli
 |----------------------|----------------------------------------|
 | `baseDamage`         | The base damage of the attack          |
 | `typeEffectiveness`  | See type effectiveness table below     |
-| `randomFactor`       | A random value in the range [0.9, 1.1] |
+| `randomFactor`       | A random value in the range [0.9, 1.1) |
 | `criticalMultiplier` | 2.0 (15% to proc), otherwise 1.0       |
 
 ### Type effectiveness
