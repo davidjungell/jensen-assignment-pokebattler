@@ -1,20 +1,35 @@
 # Pokémon Battler
 
-#TODO: usage?
-#TODO: motivate choice of interface
-
 This is Assignment 2 for the introductory Java course at Jensen YH. Assignment 1 is a console application, a collection of Pokémon (Pokédex), that handles (CRUD) and stores Pokémon. Assignment 2 expands Pokédex to include fighting capabilities between the Pokémon.
 
 Battles are human versus CPU and are turn and text based. CPU chooses a Pokémon at random, while the player choose from their Pokédex.
 
-Course: Programmering med Java, grund (Fall 2026) - Assignment 2 (Jensen) Author: David Jungell
+Course: Programmering med Java, grund (Fall 2026) - Assignment 2 (Jensen)
+
+Author: David Jungell
 
 ---
 
 ## Table of contents
 
 1. [Pokédex (from assignment 1)](#pokédex-from-assignment-1)
-
+    - [Functions](#functions)
+    - [CSV-format (`pokedex.csv`)](#csv-format-pokedexcsv)
+    - [JSON-format (`pokedex.json`)](#json-format-pokedexjson)
+2. [Battle system](#battle-system)
+    - [Flow of a battle](#flow-of-a-battle)
+    - [Damage output](#damage-output)
+    - [Type effectiveness](#type-effectiveness)
+    - [Statistics](#statistics)
+3. [Getting started](#getting-started)
+    - [Requirements](#requirements)
+    - [Dependencies](#dependencies)
+    - [How to run the app](#how-to-run-the-app)
+    - [Usage](#usage)
+4. [Data files](#data-files)
+5. [OOP design and motivation](#oop-design-and-motivation)
+6. [Known limitations](#known-limitations)
+7. [Attempted VG requirements](#attempted-vg-requirements)
 ---
 
 ## Pokédex (from assignment 1)
@@ -73,9 +88,11 @@ Here is an example with only one Pokémon, that has only one attack:
 
 ## Battle system
 
+This section explains how the battles work and which statistics are calculated.
+
 ### Flow of a battle
 
-Enter the name of the Pokémon to fight with. The available Pokémon are shown in the first alternative in the start menu at startup. CPU chooses its Pokémon randomly from the seeded pool. The fight is turn based, with one attack per turn. Who starts is determined by coin toss. The player chooses which attack to use by entering the corresponding number shown in the console, where all availabe attacks are shown to the user. CPU chooses its attack randomly. The fight continues until a Pokémon faints (reaches 0 HP), or if the player cancels the fight by pressing [Enter].
+Enter the name of the Pokémon to fight with. The available Pokémon are shown in the first alternative in the start menu at startup. CPU chooses its Pokémon randomly from the seeded pool (`storage.SeedData`). The fight is turn based, with one attack per turn. As the rule for who starts, I chose coin toss, since it was easy to implement and is fair in the long run. The player chooses which attack to use by entering the corresponding number shown in the console, where all available attacks are shown to the user. CPU chooses its attack randomly. The fight continues until a Pokémon faints (reaches 0 HP), or if the player cancels the fight by pressing [Enter].
 
 Every battle starts with full HP Pokémon.
 
@@ -114,7 +131,7 @@ The implementing code for this table can be found in `model.Type.effectivenessAg
 
 ### Statistics
 
-When a fight is completed, and only then, the battle results with summary statistics are persisted. The latter can be viewed in the start menu, and are as follows:
+When a fight is completed, and only then, the battle results with summary statistics are persisted. The statistics can be viewed in the start menu, and are as follows:
 
 - Total wins and losses
 - Most used Pokémon
@@ -140,13 +157,37 @@ Downloaded automatically (see `pom.xml`):
 - Clone the repository and open it as a Maven-project in IntelliJ.
 - Run `Main.java`.
 
+### Usage
+
+Start the app and pick an option from the start menu. Press [Enter] to return in menus, or to cancel a fight.
+
 ## Data files
 
 | File                            | Content                                          | Created by              |
 |---------------------------------|--------------------------------------------------|-------------------------|
 | `pokedex.json` or `pokedex.csv` | The player's Pokémon collection                  | `Storage`               |
 | `battle_results.json`           | All completed battles with statistics summarized | `BattleStorage`         |
-| `storage.SeedData.java`         | The Pokémon pool used by the CPU                 | `storage.SeedData.java` |
+
+## OOP design and motivation
+
+The battle needs two types of decisions from each side: which Pokémon to choose, and which attack to choose. The code deals with this by using the following interfaces and implementations:
+
+| Interface         | Player (console input) | CPU (random)         |
+|-------------------|------------------------|----------------------|
+| `PokemonSelector` | `HumanPokemonSelector` | `CPUPokemonSelector` |
+| `AttackSelector`  | `HumanAttackSelector`  | `CPUAttackSelector`  |
+
+`BattleManager` does not know how these choices are made (random or via input), since that is hidden behind the interfaces (Strategy). An example is `selector.chooseAttack(...)`. This line of code runs differently depending on the object (polymorphism) at runtime.
+
+### Motivation
+
+- **Loose coupling:** `BattleManager` does not know how the choices are made. This is achieved using the Strategy pattern.
+- **Separation of concerns**. The selectors own how a choice is made, including input validation, while BattleManager owns the battle rules.
+- **Testability:** Fake selectors can be passed to a JUnit test, without entering console inputs for each round, or relying on randomness.
+
+### Why not inheritance?
+
+Inheritance suits cases when subclasses share (*inherit*) code. The code for choosing a Pokémon/attack for a human versus CPU is very different (input vs random, resp.). The code is merely called similarly, which is why I chose interfaces. Inheritance is only used for custom exceptions.
 
 ## Known limitations
 
@@ -156,20 +197,12 @@ Downloaded automatically (see `pom.xml`):
 
 ## Attempted VG requirements
 
+I've attempted to fulfill all VG requirements:
+
+- Clear and well motivated OOP-architecture
 - Implementation of type effectiveness table
 - JSON as persistence format
 - Critical hits, shown in the log
 - Persistent statistics: total win/losses, win/loss-ratio per Pokémon, most used attack, most used Pokémon
 - The statistics can be viewed in the menu.
-- The app does not crash if the JSON-file is corrupt or missing
-
-
-
-
-
-
-
-
-
-
-
+- The app properly deals with a missing or corrupt JSON-file.
