@@ -30,7 +30,6 @@ public class PokemonController {
             } catch (InvalidPokemonException e) {
                 System.out.println(e.getMessage());
             }
-
         }
 
         Type type = null;
@@ -230,7 +229,6 @@ public class PokemonController {
                 }
             }
         }
-
     }
 
     private static String readAttackName(Scanner scanner, int attackNumber) {
@@ -488,7 +486,7 @@ public class PokemonController {
         }
     }
 
-    public static void showStats(Pokemon p) {
+    private static void showStats(Pokemon p) {
         System.out.println();
         System.out.println("=== " + p.getName() + " (" + p.getType() + ") ===");
         System.out.println("HP: " + p.getCurrentHp() + "/" + p.getMaxHp());
@@ -498,5 +496,111 @@ public class PokemonController {
                     a.getName(), a.getType(), a.getDamage(), a.getAccuracy() * 100);
         }
         System.out.println();
+    }
+
+    static void showList(Scanner scanner) {
+        List<Pokemon> displayList = Manager.getPokedexList();
+        int pageSize = 10;
+        int currentPage = 0;
+
+        while (true) {
+            int totalPages = (int) Math.ceil((double) displayList.size() / pageSize);
+            int start = currentPage * pageSize;
+            int end = Math.min(start + pageSize, displayList.size());
+            List<Pokemon> pageView = displayList.subList(start, end);
+
+            System.out.println();
+            System.out.println("=== Pokémon-lista (sida " + (currentPage + 1) + " av " + totalPages + ") ===");
+            int index = start;
+            for (Pokemon p : pageView) {
+                index++;
+                System.out.printf("%2d. Namn: %-15s Typ: %-10s HP: %d/%d%n",
+                        index, p.getName(), p.getType(), p.getCurrentHp(), p.getMaxHp());
+            }
+            System.out.println("[N]ästa  [F]öregående  [S]ortera  [Fi]ltrera  [Sö]k  [V]isa statistik  [Å]terställ vy");
+            System.out.println();
+
+            String choice = InputHelper.promptOrBack(scanner, "Ange kommando, eller tryck [Enter] för att backa: ");
+            if (choice == null) {
+                break;
+            }
+
+            switch (choice.toUpperCase()) {
+                case "N" -> {
+                    if (displayList.size() > end) {
+                        currentPage++;
+                    } else {
+                        System.out.println("Du är redan på sista sidan.");
+                    }
+                }
+                case "F" -> {
+                    if (currentPage > 0) {
+                        currentPage--;
+                    } else {
+                        System.out.println("Du är redan på första sidan.");
+                    }
+                }
+                case "S" -> {
+                    displayList = Manager.sortByNameBubble(displayList);
+                    currentPage = 0;
+                }
+                case "FI" -> {
+                    while (true) {
+                        String input = InputHelper.promptOrBack(scanner, "Ange typen att filtrera efter (FIRE, WATER, GRASS, ELECTRIC, NORMAL) eller tryck [Enter] för att backa: ");
+                        if (input == null) {
+                            break;
+                        }
+
+                        try {
+                            List<Pokemon> result = Manager.filterByType(Type.valueOf(input.toUpperCase()), displayList);
+                            if (result.isEmpty()) {
+                                System.out.println("Inga Pokémon att visa efter filtreringen.");
+                                break;
+                            }
+                            displayList = result;
+                            currentPage = 0;
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Okänd typ. Försök igen.");
+                        }
+                    }
+                }
+                case "SÖ" -> {
+                    String input = InputHelper.promptOrBack(scanner, "Sök efter namn (t.ex. 'pika') eller tryck [Enter] för att backa: ");
+                    if (input == null) {
+                        break;
+                    }
+                    List<Pokemon> result = Manager.searchByName(input);
+                    if (result.isEmpty()) {
+                        System.out.println("Sökningen matchar ingen Pokémon.");
+                        break;
+                    }
+                    displayList = result;
+                    currentPage = 0;
+                }
+                case "V" -> {
+                    while (true) {
+                        String input = InputHelper.promptOrBack(scanner, "Ange namnet på den Pokémon som du vill se statistik för ([Enter] för att backa): ");
+                        if (input == null) {
+                            break;
+                        }
+
+                        Pokemon pokemon;
+                        try {
+                            pokemon = Manager.findByName(input);
+                        } catch (PokemonNotFoundException e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        showStats(pokemon);
+                    }
+                }
+                case "Å" -> {
+                    displayList = Manager.getPokedexList();
+                    currentPage = 0;
+                }
+                default -> System.out.println("Ogiltigt val! Försök igen.");
+            }
+        }
     }
 }

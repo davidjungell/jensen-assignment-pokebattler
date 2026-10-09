@@ -68,7 +68,7 @@ public class Pokemon {
 
     private static void validateAttacks(List<Attack> attacks) {
         if (attacks != null && attacks.stream().anyMatch(Objects::isNull)) {
-            throw new InvalidPokemonException("Ogiltig data! Attack element får inte vara null.");
+            throw new InvalidPokemonException("Ogiltig data! Attack-element får inte vara null.");
         }
     }
 

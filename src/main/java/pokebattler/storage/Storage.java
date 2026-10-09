@@ -101,7 +101,7 @@ public class Storage {
             Throwable cause = e.getCause();
             if (cause instanceof InvalidPokemonException || cause instanceof InvalidAttackException) {
                 // location pekar här på JSON objektet, inte den felaktiga raden
-                throw new StorageException("Korrupt eller felformaterad JSON-fil, ungefär vid rad: " + location + ". " + cause.getMessage(), e);
+                throw new StorageException("Korrupt eller felformaterad JSON-fil, ungefär vid rad " + location + ". " + cause.getMessage(), e);
             }
             throw new StorageException("Kunde inte tolka JSON filen. Se rad: " + location, e);
 
