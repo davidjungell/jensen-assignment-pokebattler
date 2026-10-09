@@ -7,6 +7,7 @@ import pokebattler.exception.InvalidPokemonException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Pokemon {
     private String name;
@@ -25,6 +26,7 @@ public class Pokemon {
         validateType(type);
         validateMaxHp(maxHp);
         validateCurrentHp(currentHp, maxHp);
+        validateAttacks(attacks);
         this.name = name;
         this.type = type;
         this.maxHp = maxHp;
@@ -61,6 +63,12 @@ public class Pokemon {
         }
         if (currentHp > maxHp) {
             throw new InvalidPokemonException("Ogiltig inmatning! Nuvarande HP får inte vara mer än max HP.");
+        }
+    }
+
+    private static void validateAttacks(List<Attack> attacks) {
+        if (attacks != null && attacks.stream().anyMatch(Objects::isNull)) {
+            throw new InvalidPokemonException("Ogiltig data! Attack element får inte vara null.");
         }
     }
 
