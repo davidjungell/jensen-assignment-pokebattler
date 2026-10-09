@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PokemonController {
-    public static void addPokemon(Scanner scanner) {
+class PokemonController {
+    static void addPokemon(Scanner scanner) {
         String input;
         String name = null;
         boolean valid = false;
@@ -89,7 +89,7 @@ public class PokemonController {
         System.out.println(name + " har lagts till. Använd 'Redigera en Pokémon' -> 'Redigera attacker' för att lägga till attacker.");
     }
 
-    public static void removePokemon(Scanner scanner) {
+    static void removePokemon(Scanner scanner) {
         while (true) {
             System.out.println();
             String input = InputHelper.promptOrBack(scanner, "Ange namnet på den Pokémon som ska tas bort eller tryck [Enter] för att backa: ");
@@ -110,7 +110,7 @@ public class PokemonController {
         }
     }
 
-    public static void editPokemon(Scanner scanner) {
+    static void editPokemon(Scanner scanner) {
         while (true) {
             System.out.println();
             String input = InputHelper.promptOrBack(scanner, "Ange namnet på den Pokémon som ska redigeras eller tryck [Enter] för att backa: ");

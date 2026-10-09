@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class BattleController {
+class BattleController {
 
-    public static void startBattle(Scanner scanner) {
+    static void startBattle(Scanner scanner) {
 
         Random random = new Random();
         while (true) {
@@ -46,7 +46,7 @@ public class BattleController {
         }
     }
 
-    public static void showStats(Scanner scanner) {
+    static void showStats(Scanner scanner) {
         List<BattleResult> results;
         try {
             results = BattleStorage.load();

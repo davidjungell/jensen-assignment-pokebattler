@@ -9,17 +9,17 @@ public class BattleStatistics {
         this.results = new ArrayList<>(results);
     }
 
-    public int totalWins() {
+    private int totalWins() {
         return (int) results.stream()
                 .filter(result -> result.playerWon())
                 .count();
     }
 
-    public int totalLosses() {
+    private int totalLosses() {
         return results.size() - totalWins();
     }
 
-    public Map<String, Integer> battlesPerPokemon() {
+    private Map<String, Integer> battlesPerPokemon() {
         Map<String, Integer> battleMap = new HashMap<>();
         for (BattleResult result : results) {
             String name = result.pokemonName();
@@ -29,7 +29,7 @@ public class BattleStatistics {
         return battleMap;
     }
 
-    public Map<String, Integer> winsPerPokemon() {
+    private Map<String, Integer> winsPerPokemon() {
         Map<String, Integer> winMap = new HashMap<>();
         for (BattleResult result : results) {
             if (result.playerWon()) {
@@ -41,7 +41,7 @@ public class BattleStatistics {
         return winMap;
     }
 
-    public Optional<String> mostCommon(List<String> items) {
+    private Optional<String> mostCommon(List<String> items) {
         Map<String, Integer> countMap = new HashMap<>();
         for (String item : items) {
             Integer count = countMap.getOrDefault(item, 0) + 1;
@@ -53,7 +53,7 @@ public class BattleStatistics {
                 .map(Map.Entry::getKey);
     }
 
-    public Optional<String> mostUsedPokemon() {
+    private Optional<String> mostUsedPokemon() {
         List<String> names = new ArrayList<>();
         for (BattleResult result : results) {
             names.add(result.pokemonName());
@@ -61,7 +61,7 @@ public class BattleStatistics {
         return mostCommon(names);
     }
 
-    public Optional<String> mostUsedAttack() {
+    private Optional<String> mostUsedAttack() {
         List<String> attacks = new ArrayList<>();
         for (BattleResult result : results) {
             attacks.addAll(result.playerAttacksUsed());

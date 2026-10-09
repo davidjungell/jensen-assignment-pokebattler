@@ -45,7 +45,7 @@ public class Pokemon {
         }
     }
 
-    public static void validateType(Type type) {
+    private static void validateType(Type type) {
         if (type == null) {
             throw new InvalidPokemonException("Ogiltig inmatning! Typen får inte vara null.");
         }

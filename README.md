@@ -42,7 +42,7 @@ Author: David Jungell
 - Sort names alphabetically
 - Show stats for Pokémon
 - JSON and CSV persistence
-- At startup, the app tries to load automatically, prioritizing in this order: JSON -> CSV -> seeded data
+- At startup, the app tries to load automatically, prioritizing in this order: JSON → CSV → seeded data
 - Seeded data contains 25 Pokémon
 - Saves automatically to JSON when the user exits via the menu
 - Field validation when creating and editing Pokémon (e.g. empty name, negative HP)

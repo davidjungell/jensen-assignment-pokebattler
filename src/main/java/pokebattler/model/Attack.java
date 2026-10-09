@@ -36,7 +36,7 @@ public class Attack {
         }
     }
 
-    public static void validateType(Type type) {
+    private static void validateType(Type type) {
         if (type == null) {
             throw new InvalidAttackException("Ogiltig inmatning! Typen får inte vara null.");
         }

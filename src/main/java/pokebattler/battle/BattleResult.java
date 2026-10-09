@@ -19,7 +19,7 @@ public record BattleResult(
         return new BattleResult(null, List.of(), false, false);
     }
 
-    public static BattleResult completed(String pokemonName, List<String> playerAttacksUsed, boolean playerWon) {
+    static BattleResult completed(String pokemonName, List<String> playerAttacksUsed, boolean playerWon) {
         return new BattleResult(pokemonName, playerAttacksUsed, playerWon, true);
     }
 }

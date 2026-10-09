@@ -8,8 +8,7 @@ import pokebattler.storage.Storage;
 
 import java.util.Scanner;
 
-public class StorageController {
-
+class StorageController {
     static void saveToFile(Scanner scanner) {
         FileFormat format = chooseFileFormat(scanner, "Filformat att spara till:");
         if (format == null) {

@@ -13,7 +13,7 @@ public class Main {
         scanner.close();
     }
 
-    public static void startMenu(Scanner scanner) {
+    private static void startMenu(Scanner scanner) {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println();
