@@ -187,7 +187,7 @@ The battle needs two types of decisions from each side: which Pokémon to choose
 
 ### Why not inheritance?
 
-Inheritance suits cases when subclasses share (*inherit*) code. The code for choosing a Pokémon/attack for a human versus CPU is very different (input vs random, resp.). The code is merely called similarly, which is why I chose interfaces.
+Inheritance suits cases when subclasses share (*inherit*) code. The code for choosing a Pokémon/attack for a human versus CPU is very different (input vs random, respectively). Only the way they are called is the same, which is why I chose interfaces.
 
 ## Known limitations
 
