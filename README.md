@@ -170,24 +170,31 @@ Start the app and pick an option from the start menu. Press [Enter] to return in
 
 ## OOP design and motivation
 
-The battle needs two types of decisions from each side: which Pokémon to choose, and which attack to choose. The code deals with this by using the following interfaces and implementations:
+The battle needs two types of decisions from each side: which Pokémon to choose, and which attack to choose. It also needs a way to present the battle events. The code deals with this by using the following interfaces and implementations:
 
 | Interface         | Player (console input) | CPU (random)         |
 |-------------------|------------------------|----------------------|
 | `PokemonSelector` | `HumanPokemonSelector` | `CPUPokemonSelector` |
 | `AttackSelector`  | `HumanAttackSelector`  | `CPUAttackSelector`  |
 
-`BattleManager` does not know how these choices are made (random or via input), since that is hidden behind the interfaces (Strategy). An example is `selector.chooseAttack(...)`. This line of code runs differently depending on the object (polymorphism) at runtime.
+| Interface        | Implementation          | Responsibility        |
+|------------------|-------------------------|-----------------------|
+| `BattleReporter` | `ConsoleBattleReporter` | Reports battle events |
+
+
+`BattleManager` does not know how these choices are made (random or via input), since that is hidden behind interfaces (the Strategy pattern), nor does it know how the events are reported. It only knows the reporting happens through `BattleReporter`, but how it actually is printed is decided by `ConsoleBattleReporter`. 
+
+This is polymorphism in the project: `selector.chooseAttack(...)` in `fight()` runs differently depending on the object at runtime. If the object is `HumanAttackSelector`, it reads from the console, and if it is `CPUAttackSelector`, it draws a random attack.
 
 ### Motivation
 
-- **Loose coupling:** `BattleManager` does not know how the choices are made. This is achieved using the Strategy pattern.
-- **Separation of concerns**. The selectors own how a choice is made, including input validation, while BattleManager owns the battle rules.
-- **Testability:** Fake selectors can be passed to a JUnit test, without entering console inputs for each round, or relying on randomness.
+- **Loose coupling:** `BattleManager` depends on the interfaces `PokemonSelector`, `AttackSelector` and `BattleReporter`, but is not hardcoded to concrete classes. Instead, the implementations are constructor injected, allowing them to be changed without touching `BattleManager`.
+- **Separation of concerns**. The selectors own how a choice is made, including input validation, while `BattleManager` owns the rules and flow of the battle. No `System.out` calls are in `BattleManager`, since they are handled by `ConsoleBattleReporter`.
+- **Testability:** Fake selectors (or a silent printer) can be passed with a fixed `Random` seed to a JUnit test, without needing console inputs or getting different result due to chance each time.
 
 ### Why not an abstract base class?
 
-Abstracts classes are suitable when the subclasses are the same kind of things, and share states and partial implementations. The human and CPU selectors do not: one selects based on input from `Scanner` and validates, and the other selects based on a randomly drawn number.
+Abstract classes are suitable when the subclasses are variations of the same things, and share states and partial implementations. The human and CPU selectors do not: one selects based on input from `Scanner` and validates, and the other selects based on a randomly drawn number.
 
 ## Known limitations
 
