@@ -5,7 +5,7 @@ import pokebattler.model.Pokemon;
 
 public interface BattleReporter {
     void roundStarted(int turn);
-    void hpStatus(Pokemon attacker, Pokemon defender);
+    void hpStatus(Pokemon human, Pokemon cpu);
     void pokemonChosen(boolean isCpu, Pokemon pokemon);
     void attackMissed(Pokemon attacker, Attack attack, Pokemon defender);
     void attackHit(Pokemon attacker, Attack attack, Pokemon defender, DamageOutcome outcome);
