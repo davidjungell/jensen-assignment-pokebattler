@@ -1,4 +1,4 @@
 package pokebattler.battle;
 
-record DamageOutcome(boolean missed, int damage, boolean critical) {
+public record DamageOutcome(boolean missed, int damage, boolean critical) {
 }
