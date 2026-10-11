@@ -13,15 +13,15 @@ public class BattleManager {
     private final AttackSelector humanAttackSelector;
     private final PokemonSelector cpuPokemonSelector;
     private final AttackSelector cpuAttackSelector;
-    private final static double CRITICAL_CHANCE = 0.15;
-    private final static double CRITICAL_MULTIPLIER = 2.0;
+    private final DamageCalculator calculator;
 
-    public BattleManager(Random random, PokemonSelector humanPokemonSelector, AttackSelector humanAttackSelector, PokemonSelector cpuPokemonSelector, AttackSelector cpuAttackSelector) {
+    public BattleManager(Random random, PokemonSelector humanPokemonSelector, AttackSelector humanAttackSelector, PokemonSelector cpuPokemonSelector, AttackSelector cpuAttackSelector, DamageCalculator calculator) {
         this.random = random;
         this.humanPokemonSelector = humanPokemonSelector;
         this.humanAttackSelector = humanAttackSelector;
         this.cpuPokemonSelector = cpuPokemonSelector;
         this.cpuAttackSelector = cpuAttackSelector;
+        this.calculator = calculator;
     }
 
     public BattleResult fight() {
@@ -64,28 +64,22 @@ public class BattleManager {
     }
 
     private void performAttack(Attack attack, Pokemon attacker, Pokemon defender) {
-        boolean missAttack = random.nextDouble() > attack.getAccuracy();
+        DamageOutcome outcome = calculator.calculate(attack, defender);
+
         System.out.println();
-        if (missAttack) {
+        if (outcome.missed()) {
             report("%s använde attacken %s på %s, men missade!", attacker.getName(), attack.getName(), defender.getName());
             return;
         }
 
-        double randomDamageFactor = random.nextDouble(0.9, 1.1);
-        double multiplier = attack.getType().effectivenessAgainst(defender.getType()) * randomDamageFactor;
-        boolean critical = random.nextDouble() < CRITICAL_CHANCE;
-        if (critical) {
-            multiplier *= CRITICAL_MULTIPLIER;
-        }
-        int damage = (int) Math.round(attack.getDamage() * multiplier);
-        defender.takeDamage(damage);
+        defender.takeDamage(outcome.damage());
         report(
                 "%s använde attacken %s på %s för %d skada.%s",
                 attacker.getName(),
                 attack.getName(),
                 defender.getName(),
-                damage,
-                critical ? " (KRITISK TRÄFF!)" : ""
+                outcome.damage(),
+                outcome.critical() ? " (KRITISK TRÄFF!)" : ""
         );
     }
 

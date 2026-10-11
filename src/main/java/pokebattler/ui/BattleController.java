@@ -21,7 +21,8 @@ class BattleController {
                     new HumanPokemonSelector(scanner),
                     new HumanAttackSelector(scanner),
                     new CPUPokemonSelector(random, SeedData.loadSeedData()),
-                    new CPUAttackSelector(random)
+                    new CPUAttackSelector(random),
+                    new DamageCalculator(random)
             );
             BattleResult result = battleManager.fight();
 
