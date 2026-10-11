@@ -185,9 +185,9 @@ The battle needs two types of decisions from each side: which Pokémon to choose
 - **Separation of concerns**. The selectors own how a choice is made, including input validation, while BattleManager owns the battle rules.
 - **Testability:** Fake selectors can be passed to a JUnit test, without entering console inputs for each round, or relying on randomness.
 
-### Why not inheritance?
+### Why not an abstract base class?
 
-Inheritance suits cases when subclasses share (*inherit*) code. The code for choosing a Pokémon/attack for a human versus CPU is very different (input vs random, respectively). Only the way they are called is the same, which is why I chose interfaces.
+Abstracts classes are suitable when the subclasses are the same kind of things, and share states and partial implementations. The human and CPU selectors do not: one selects based on input from `Scanner` and validates, and the other selects based on a randomly drawn number.
 
 ## Known limitations
 
