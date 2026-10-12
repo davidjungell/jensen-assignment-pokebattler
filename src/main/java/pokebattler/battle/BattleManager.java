@@ -5,6 +5,7 @@ import pokebattler.model.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class BattleManager {
@@ -27,10 +28,14 @@ public class BattleManager {
     }
 
     public BattleResult fight() {
-        Pokemon human = humanPokemonSelector.choosePokemon();
-        if (human == null) return BattleResult.aborted();
+        Optional<Pokemon> humanChoice = humanPokemonSelector.choosePokemon();
+        if (humanChoice.isEmpty()) return BattleResult.aborted();
+        Pokemon human = humanChoice.get();
         reporter.pokemonChosen(false, human);
-        Pokemon cpu = cpuPokemonSelector.choosePokemon();
+
+        Optional<Pokemon> cpuChoice = cpuPokemonSelector.choosePokemon();
+        if (cpuChoice.isEmpty()) return BattleResult.aborted();
+        Pokemon cpu = cpuChoice.get();
         reporter.pokemonChosen(true, cpu);
         List<String> playerAttacksUsed = new ArrayList<>();
         boolean playerTurn = random.nextBoolean();
@@ -43,10 +48,11 @@ public class BattleManager {
 
             reporter.roundStarted(turn);
             reporter.hpStatus(human, cpu);
-            Attack attack = selector.chooseAttack(attacker);
-            if (attack == null) {
-                return BattleResult.aborted();
-            }
+
+            Optional<Attack> attackChoice = selector.chooseAttack(attacker);
+            if (attackChoice.isEmpty()) return BattleResult.aborted();
+            Attack attack = attackChoice.get();
+
             performAttack(attack, attacker, defender);
             if (playerTurn) playerAttacksUsed.add(attack.getName());
             playerTurn = !playerTurn;

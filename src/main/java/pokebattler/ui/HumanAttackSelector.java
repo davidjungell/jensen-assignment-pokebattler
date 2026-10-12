@@ -5,6 +5,7 @@ import pokebattler.model.Attack;
 import pokebattler.model.Pokemon;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class HumanAttackSelector implements AttackSelector {
@@ -14,13 +15,13 @@ public class HumanAttackSelector implements AttackSelector {
         this.scanner = scanner;
     }
     @Override
-    public Attack chooseAttack(Pokemon pokemon) {
+    public Optional<Attack> chooseAttack(Pokemon pokemon) {
         List<Attack> attacks = pokemon.getAttacks();
         while (true) {
             PokemonController.printAttacks(pokemon);
             String input = InputHelper.promptOrBack(scanner, "Välj attack (1-" + attacks.size() + ") eller tryck [Enter] för att avbryta striden: ");
             if (input == null) {
-                return null;
+                return Optional.empty();
             }
 
             int choice;
@@ -32,7 +33,7 @@ public class HumanAttackSelector implements AttackSelector {
             }
 
             if (choice >= 1 && choice <= attacks.size()) {
-                return attacks.get(choice - 1);
+                return Optional.of(attacks.get(choice - 1));
             } else {
                 System.out.println("Ogiltig inmatning. Försök igen.");
             }

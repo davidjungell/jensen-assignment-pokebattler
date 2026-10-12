@@ -3,6 +3,7 @@ package pokebattler.battle;
 import pokebattler.model.Pokemon;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class CPUPokemonSelector implements PokemonSelector {
@@ -15,13 +16,17 @@ public class CPUPokemonSelector implements PokemonSelector {
     }
 
     @Override
-    public Pokemon choosePokemon() {
+    public Optional<Pokemon> choosePokemon() {
         List<Pokemon> candidates = list
                 .stream()
                 .filter(p -> p.getAttacks() != null && !p.getAttacks().isEmpty())
                 .toList();
 
+        if (candidates.isEmpty()) {
+            return Optional.empty();
+        }
+
         int index = random.nextInt(candidates.size());
-        return candidates.get(index).copy();
+        return Optional.of(candidates.get(index).copy());
     }
 }

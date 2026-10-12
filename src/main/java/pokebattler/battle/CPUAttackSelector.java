@@ -4,6 +4,7 @@ import pokebattler.model.Attack;
 import pokebattler.model.Pokemon;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class CPUAttackSelector implements AttackSelector {
@@ -14,8 +15,13 @@ public class CPUAttackSelector implements AttackSelector {
     }
 
     @Override
-    public Attack chooseAttack(Pokemon attacker) {
+    public Optional<Attack> chooseAttack(Pokemon attacker) {
         List<Attack> attacks = attacker.getAttacks();
-        return attacks.get(random.nextInt(attacks.size()));
+
+        if (attacks == null || attacks.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(attacks.get(random.nextInt(attacks.size())));
     }
 }
