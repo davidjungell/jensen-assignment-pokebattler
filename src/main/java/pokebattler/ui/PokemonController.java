@@ -354,17 +354,6 @@ class PokemonController {
         System.out.println(newAttack.getName() + " har lagts till för " + pokemon.getName() + ".");
     }
 
-    static void printAttacks(Pokemon pokemon) {
-        System.out.println();
-        System.out.println("Attacker hos " + pokemon.getName() + ":");
-        List<Attack> attacks = pokemon.getAttacks();
-        for (int i = 0; i < attacks.size(); i++) {
-            Attack a = pokemon.getAttacks().get(i);
-            System.out.printf("%d. %-15s Typ: %-10s Skada: %-4d Träffsäkerhet: %.0f%%%n",
-                    i + 1, a.getName(), a.getType(), a.getDamage(), a.getAccuracy() * 100);
-        }
-    }
-
     private static void editSingleAttack(Scanner scanner, Pokemon pokemon, int attackNumber) {
         List<Attack> attacks = pokemon.getAttacks();
         Attack attack = attacks.get(attackNumber - 1);
@@ -455,7 +444,7 @@ class PokemonController {
                 }
             } else {
                 List<Attack> attacks = pokemon.getAttacks();
-                printAttacks(pokemon);
+                AttackPrinter.printNumbered(pokemon);
                 System.out.println("[L]ägg till en ny attack.");
                 System.out.println();
                 String input = InputHelper.promptOrBack(scanner, "Ange vilken attack du vill redigera (1-" + attacks.size() + "), tryck [L] för att lägga till en attack, eller [Enter] för att backa: ");
@@ -491,9 +480,8 @@ class PokemonController {
         System.out.println("=== " + p.getName() + " (" + p.getType() + ") ===");
         System.out.println("HP: " + p.getCurrentHp() + "/" + p.getMaxHp());
         System.out.println("Attacker:");
-        for (Attack a : p.getAttacks()) {
-            System.out.printf("  - %-15s Typ: %-10s Skada: %-4d Träffsäkerhet: %.0f%%%n",
-                    a.getName(), a.getType(), a.getDamage(), a.getAccuracy() * 100);
+        for (Attack attack : p.getAttacks()) {
+            System.out.println("  - " + AttackPrinter.describe(attack));
         }
         System.out.println();
     }

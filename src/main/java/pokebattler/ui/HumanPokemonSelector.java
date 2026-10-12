@@ -18,7 +18,7 @@ public class HumanPokemonSelector implements PokemonSelector {
     @Override
     public Optional<Pokemon> choosePokemon() {
         while (true) {
-            String input = InputHelper.promptOrBack(scanner, "\nAnge namnet på den Pokémon du ska använda eller tryck [Enter] för att avbryta striden: ");
+            String input = InputHelper.promptOrBack(scanner, "\nVilken Pokémon vill du använda? (Enter för att avbryta): ");
             if (input == null) {
                 return Optional.empty();
             }

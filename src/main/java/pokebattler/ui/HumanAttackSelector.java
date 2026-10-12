@@ -18,8 +18,8 @@ public class HumanAttackSelector implements AttackSelector {
     public Optional<Attack> chooseAttack(Pokemon pokemon) {
         List<Attack> attacks = pokemon.getAttacks();
         while (true) {
-            PokemonController.printAttacks(pokemon);
-            String input = InputHelper.promptOrBack(scanner, "Välj attack (1-" + attacks.size() + ") eller tryck [Enter] för att avbryta striden: ");
+            AttackPrinter.printNumbered(pokemon);
+            String input = InputHelper.promptOrBack(scanner, "\nVälj attack (1-" + attacks.size() + ") eller tryck [Enter] för att avbryta: ");
             if (input == null) {
                 return Optional.empty();
             }

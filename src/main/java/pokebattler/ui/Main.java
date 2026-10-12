@@ -17,7 +17,7 @@ public class Main {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println();
-            System.out.println("=== Välkommen till Pokébattler ===");
+            System.out.println("============= Välkommen till Pokébattler =============");
             System.out.println("1. Visa en lista över alla Pokémon med statistik");
             System.out.println("2. Lägg till en ny Pokémon i listan");
             System.out.println("3. Redigera en Pokémon");

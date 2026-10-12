@@ -10,7 +10,7 @@ public class ConsoleBattleReporter implements BattleReporter {
     @Override
     public void roundStarted(int turn) {
         if (turn % 2 != 0) {
-            System.out.printf("%n====== Runda %d ======%n", (int) Math.ceil(turn / 2.0));
+            System.out.printf("%n==================== Runda %d ====================%n", (int) Math.ceil(turn / 2.0));
         }
     }
 
