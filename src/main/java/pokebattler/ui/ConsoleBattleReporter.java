@@ -18,7 +18,7 @@ public class ConsoleBattleReporter implements BattleReporter {
     public void hpStatus(Pokemon human, Pokemon cpu) {
         System.out.printf("Du: %s %d/%d HP  |  CPU: %s %d/%d HP%n",
                 human.getName(), human.getCurrentHp(), human.getMaxHp(),
-                cpu.getName(), cpu.getCurrentHp(), cpu.getMaxHp());;
+                cpu.getName(), cpu.getCurrentHp(), cpu.getMaxHp());
     }
 
     @Override
