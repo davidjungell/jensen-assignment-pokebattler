@@ -106,6 +106,10 @@ public class Pokemon {
     }
 
     public void setMaxHp(int maxHp) {
+        validateMaxHp(maxHp);
+        if (maxHp < currentHp) {
+            throw new InvalidPokemonException("Ogiltig inmatning! Max HP får inte vara lägre än nuvarande HP (" + currentHp + ").");
+        }
         this.maxHp = maxHp;
     }
 

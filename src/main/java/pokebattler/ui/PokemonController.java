@@ -194,8 +194,8 @@ class PokemonController {
                             try {
                                 int maxHp = Integer.parseInt(input);
                                 Pokemon.validateMaxHp(maxHp);
-                                System.out.println("Max HP ändrat från " + pokemon.getMaxHp() + " till " + maxHp + ".");
                                 pokemon.setMaxHp(maxHp);
+                                System.out.println("Max HP ändrat från " + pokemon.getMaxHp() + " till " + maxHp + ".");
                                 valid = true;
                             } catch (NumberFormatException e) {
                                 System.out.println("Ogiltig inmatning! Försök igen");
