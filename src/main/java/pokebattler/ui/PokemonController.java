@@ -13,75 +13,95 @@ import java.util.List;
 import java.util.Scanner;
 
 class PokemonController {
-    static void addPokemon(Scanner scanner) {
-        String input;
-        String name = null;
-        boolean valid = false;
-        while (!valid) {
-            System.out.println();
-            input = InputHelper.promptOrBack(scanner, "Ange namnet på den Pokémon du vill lägga till, eller tryck [Enter] för att backa till menyn: ");
+
+    private static String readPokemonName(Scanner scanner, String prompt) {
+        while (true) {
+            String input = InputHelper.promptOrBack(scanner, prompt);
             if (input == null) {
-                return;
+                return null;
             }
             try {
                 Pokemon.validateName(input);
-                name = input;
-                valid = true;
+                return input;
             } catch (InvalidPokemonException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
 
-        Type type = null;
-        while (type == null) {
-            input = InputHelper.promptOrBack(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) för denna Pokémon, eller tryck [Enter] för att backa till menyn: ");
+    private static Type readType(Scanner scanner, String prompt) {
+        while (true) {
+            String input = InputHelper.promptOrBack(scanner, prompt);
             if (input == null) {
-                return;
+                return null;
             }
 
             try {
-                type = Type.valueOf(input.toUpperCase());
+                return Type.valueOf(input.toUpperCase());
             } catch (IllegalArgumentException e) {
                 System.out.println("Ogiltig typ! Försök igen.");
             }
         }
+    }
 
-        int maxHp = 0;
-        valid = false;
-        while (!valid) {
-            input = InputHelper.promptOrBack(scanner, "Ange max HP för denna Pokémon eller tryck [Enter] för att backa till menyn: ");
+    private static Integer readMaxHp(Scanner scanner, String prompt) {
+        while (true) {
+            String input = InputHelper.promptOrBack(scanner, prompt);
             if (input == null) {
-                return;
+                return null;
             }
 
             try {
-                maxHp = Integer.parseInt(input);
+                int maxHp = Integer.parseInt(input);
                 Pokemon.validateMaxHp(maxHp);
-                valid = true;
+                return maxHp;
             } catch (NumberFormatException e) {
                 System.out.println("Ogiltig inmatning! Försök igen.");
             } catch (InvalidPokemonException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
 
-        int currentHp = 0;
-        valid = false;
-        while (!valid) {
-            input = InputHelper.promptOrBack(scanner, "Ange nuvarande HP för denna Pokémon eller tryck [Enter] för att backa till menyn: ");
+    private static Integer readCurrentHp(Scanner scanner, String prompt, int maxHp) {
+        while (true) {
+            String input = InputHelper.promptOrBack(scanner, prompt);
             if (input == null) {
-                return;
+                return null;
             }
 
             try {
-                currentHp = Integer.parseInt(input);
+                int currentHp = Integer.parseInt(input);
                 Pokemon.validateCurrentHp(currentHp, maxHp);
-                valid = true;
+                return currentHp;
             } catch (NumberFormatException e) {
                 System.out.println("Ogiltig inmatning! Försök igen.");
             } catch (InvalidPokemonException e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    static void addPokemon(Scanner scanner) {
+        System.out.println();
+        String name = readPokemonName(scanner, "Ange namnet på den Pokémon du vill lägga till, eller tryck [Enter] för att backa till menyn: ");
+        if (name == null) {
+            return;
+        }
+
+        Type type = readType(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) för denna Pokémon, eller tryck [Enter] för att backa till menyn: ");
+        if (type == null) {
+            return;
+        }
+
+        Integer maxHp = readMaxHp(scanner, "Ange max HP för denna Pokémon eller tryck [Enter] för att backa till menyn: ");
+        if (maxHp == null) {
+            return;
+        }
+
+        Integer currentHp = readCurrentHp(scanner, "Ange nuvarande HP för denna Pokémon eller tryck [Enter] för att backa till menyn: ", maxHp);
+        if (currentHp == null) {
+            return;
         }
 
         List<Attack> attacks = new ArrayList<>();
@@ -128,13 +148,13 @@ class PokemonController {
 
             while (true) {
                 System.out.println();
-                System.out.println("Redigera egenskaper hos " + pokemon.getName() + ".");
-                System.out.println("1. Namn.");
-                System.out.println("2. Typ (" + pokemon.getType() + ").");
-                System.out.println("3. Max HP (" + pokemon.getMaxHp() + ").");
-                System.out.println("4. Nuvarande HP (" + pokemon.getCurrentHp() + ").");
-                System.out.println("5. Redigera attacker.");
-                System.out.println("6. Visa statistik för " + pokemon.getName() + ".");
+                System.out.println("Redigera egenskaper hos " + pokemon.getName());
+                System.out.println("1. Namn");
+                System.out.println("2. Typ (" + pokemon.getType() + ")");
+                System.out.println("3. Max HP (" + pokemon.getMaxHp() + ")");
+                System.out.println("4. Nuvarande HP (" + pokemon.getCurrentHp() + ")");
+                System.out.println("5. Redigera attacker");
+                System.out.println("6. Visa statistik för " + pokemon.getName());
                 System.out.println();
                 input = InputHelper.promptOrBack(scanner, "Ange ditt val ([Enter] för att backa): ");
 
@@ -150,78 +170,50 @@ class PokemonController {
                     continue;
                 }
 
-                boolean valid = false;
                 switch (choice) {
                     case 1 -> {
-                        while (!valid) {
-                            input = InputHelper.promptOrBack(scanner, "Ange nytt namn eller tryck [Enter] för att backa: ");
-                            if (input == null) {
-                                break;
-                            }
-                            try {
-                                Pokemon.validateName(input);
-                                valid = true;
-                                System.out.println("Namnet har ändrats från " + pokemon.getName() + " till " + input + ".");
-                                pokemon.setName(input);
-                                break;
-                            } catch (InvalidPokemonException e) {
-                                System.out.println(e.getMessage());
-                            }
+                        String newName = readPokemonName(scanner, "Ange nytt namn eller tryck [Enter] för att backa: ");
+                        if (newName == null) {
+                            break;
                         }
+                        String oldName = pokemon.getName();
+                        System.out.println("Namnet har ändrats från " + oldName + " till " + newName + ".");
+                        pokemon.setName(newName);
                     }
                     case 2 -> {
-                        Type type = null;
-                        while (type == null) {
-                            input = InputHelper.promptOrBack(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) eller tryck [Enter] för att backa: ");
-                            if (input == null) {
-                                break;
-                            }
-                            try {
-                                type = Type.valueOf(input.toUpperCase());
-                                System.out.println("Typ ändrad från " + pokemon.getType() + " till " + type + ".");
-                                pokemon.setType(type);
-                            } catch (IllegalArgumentException e) {
-                                System.out.println("Ogiltig inmatning! Försök igen");
-                            }
+                        Type newType = readType(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) eller tryck [Enter] för att backa: ");
+                        if (newType == null) {
+                            break;
                         }
+                        Type oldType = pokemon.getType();
+                        System.out.println("Typ ändrad från " + oldType + " till " + newType + ".");
+                        pokemon.setType(newType);
                     }
                     case 3 -> {
-                        while (!valid) {
-                            input = InputHelper.promptOrBack(scanner, "Ange nytt max HP eller tryck [Enter] för att backa: ");
-                            if (input == null) {
+                        while (true) {
+                            Integer newMaxHp = readMaxHp(scanner, "Ange nytt max HP eller tryck [Enter] för att backa: ");
+                            if (newMaxHp == null) {
                                 break;
                             }
+
+                            int oldMaxHp = pokemon.getMaxHp();
                             try {
-                                int maxHp = Integer.parseInt(input);
-                                Pokemon.validateMaxHp(maxHp);
-                                pokemon.setMaxHp(maxHp);
-                                System.out.println("Max HP ändrat från " + pokemon.getMaxHp() + " till " + maxHp + ".");
-                                valid = true;
-                            } catch (NumberFormatException e) {
-                                System.out.println("Ogiltig inmatning! Försök igen");
+                                pokemon.setMaxHp(newMaxHp);
+                                System.out.println("Max HP ändrat från " + oldMaxHp + " till " + newMaxHp + ".");
+                                break;
                             } catch (InvalidPokemonException e) {
                                 System.out.println(e.getMessage());
                             }
                         }
                     }
                     case 4 -> {
-                        while (!valid) {
-                            input = InputHelper.promptOrBack(scanner, "Ange nuvarande HP eller tryck [Enter] för att backa: ");
-                            if (input == null) {
-                                break;
-                            }
-                            try {
-                                int currentHp = Integer.parseInt(input);
-                                Pokemon.validateCurrentHp(currentHp, pokemon.getMaxHp());
-                                System.out.println("Max HP ändrat från " + pokemon.getCurrentHp() + " till " + currentHp + ".");
-                                pokemon.setCurrentHp(currentHp);
-                                valid = true;
-                            } catch (NumberFormatException e) {
-                                System.out.println("Ogiltig inmatning! Försök igen");
-                            } catch (InvalidPokemonException e) {
-                                System.out.println(e.getMessage());
-                            }
+                        Integer newCurrentHp = readCurrentHp(scanner, "Ange nuvarande HP eller tryck [Enter] för att backa: ", pokemon.getMaxHp());
+                        if (newCurrentHp == null) {
+                            break;
                         }
+                        int oldCurrentHp = pokemon.getCurrentHp();
+                        System.out.println("Nuvarande HP ändrat från " + oldCurrentHp + " till " + newCurrentHp + ".");
+                        pokemon.setCurrentHp(newCurrentHp);
                     }
                     case 5 -> editAttacks(scanner, pokemon);
                     case 6 -> showStats(pokemon);
@@ -243,20 +235,6 @@ class PokemonController {
                 return input;
             } catch (InvalidAttackException e) {
                 System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private static Type readAttackType(Scanner scanner, int attackNumber) {
-        while (true) {
-            String input = InputHelper.promptOrBack(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) för Attack " + attackNumber + ", eller tryck [Enter] för att backa: ");
-            if (input == null) {
-                return null;
-            }
-            try {
-                return Type.valueOf(input.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                System.out.println("Ogiltig typ! Försök igen.");
             }
         }
     }
@@ -312,7 +290,7 @@ class PokemonController {
                     step++;
                 }
                 case 2 -> {
-                    type = readAttackType(scanner, attackNumber);
+                    type = readType(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) för Attack " + attackNumber + ", eller tryck [Enter] för att backa: ");
                     if (type == null) {
                         step--;
                         break; // återgå till name
@@ -360,12 +338,12 @@ class PokemonController {
 
         while (true) {
             System.out.println();
-            System.out.println("Redigera '" + attack.getName() + "'.");
+            System.out.println("Redigera '" + attack.getName() + "'");
             System.out.println("1. Namn (" + attack.getName() + ")");
             System.out.println("2. Typ (" + attack.getType() + ")");
             System.out.println("3. Skada (" + attack.getDamage() + ")");
             System.out.println("4. Träffsäkerhet (" + attack.getAccuracy() + ")");
-            System.out.println("5. Ta bort attacken.");
+            System.out.println("5. Ta bort attacken");
             System.out.println();
 
             String input = InputHelper.promptOrBack(scanner, "Ange ditt val (1-5), eller tryck [Enter] för att backa): ");
@@ -391,7 +369,7 @@ class PokemonController {
                     attack.setName(attackName);
                 }
                 case 2 -> {
-                    Type attackType = readAttackType(scanner, attackNumber);
+                    Type attackType = readType(scanner, "Ange typen (FIRE, WATER, GRASS, ELECTRIC, NORMAL) för Attack " + attackNumber + ", eller tryck [Enter] för att backa: ");
                     if (attackType == null) {
                         break;
                     }
