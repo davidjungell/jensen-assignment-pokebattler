@@ -190,7 +190,7 @@ This is polymorphism in the project: `selector.chooseAttack(...)` in `fight()` r
 
 - **Loose coupling:** `BattleManager` depends on the interfaces `PokemonSelector`, `AttackSelector` and `BattleReporter`, but is not hardcoded to concrete classes. Instead, the implementations are constructor injected, allowing them to be changed without touching `BattleManager`.
 - **Separation of concerns**. The selectors own how a choice is made, including input validation, while `BattleManager` owns the rules and flow of the battle. No `System.out` calls are in `BattleManager`, since they are handled by `ConsoleBattleReporter`.
-- **Testability:** Fake selectors (or a silent printer) can be passed with a fixed `Random` seed to a JUnit test, without needing console inputs or getting different result due to chance each time.
+- **Testability:** Fake selectors (or a silent printer) can be passed with a fixed `Random` seed to a JUnit test, without needing console inputs or getting different results due to chance each time. See `BattleManagerTest`.
 
 ### Why not an abstract base class?
 
